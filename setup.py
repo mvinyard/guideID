@@ -6,8 +6,8 @@ import sys
 
 setup(
     name="guideID",
-    version="0.0.0",
-    python_requires=">3.8.0",
+    version="0.0.1",
+    python_requires=">3.7.0",
     author="Michael E. Vinyard - Harvard University - Massachussetts General Hospital - Broad Institute of MIT and Harvard",
     author_email="mvinyard@broadinstitute.org",
     url=None,
@@ -19,10 +19,11 @@ setup(
     ],
     
     install_requires=[
+        "pandas>=1.3.4",
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.7",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],
