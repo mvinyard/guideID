@@ -57,12 +57,12 @@ class _GuideID:
             self.df = df
         
         self.guide_df = _return_guides_in_regions(sequence,
-                                  self.df,
-                                  region_column,
-                                  region_specification,
-                                  PAM,
-                                  region_extension,
-                                 ):
-            
-            if return_guides:
-                return self.guide_df
+                                                  self.df,
+                                                  region_column,
+                                                  region_specification,
+                                                  PAM,
+                                                  region_extension,
+                                                 ):
+
+        if return_guides:
+            return self.guide_df
