@@ -30,7 +30,28 @@ class _GuideID:
              return_guides=False,
             ):
         
-        """"""
+        """
+        Parameters:
+        -----------
+        df
+
+
+        sequence
+
+
+        region_column
+
+
+        region_specification
+
+
+        Returns:
+        --------
+
+        Notes:
+        ------
+        df.loc[df[region_column] == region_specification]
+        """
         
         if df:
             self.df = df
