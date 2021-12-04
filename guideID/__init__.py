@@ -1,3 +1,3 @@
 # __init__.py
 
-from ._GuideID improt _GuideID as GuideID
+from ._GuideID import _GuideID as GuideID
