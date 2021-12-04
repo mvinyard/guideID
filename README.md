@@ -1,3 +1,3 @@
-# guideID
+# [guideID.logo](/docs/images/guideID.logo.svg)
 
-Search and find a PAM sequence. 
+Identify PAM sequences and the associated protospacers within a sequence. 
