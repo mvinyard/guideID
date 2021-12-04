@@ -1,2 +1,3 @@
 # guideID
-guideID: python tools to find PAM sequences
+
+Search and find a PAM sequence. 
