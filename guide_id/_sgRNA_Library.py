@@ -1,7 +1,7 @@
 
-# _GuideID.py
+# _sgRNA_Library.py
 
-__module_name__ = "_GuideID.py"
+__module_name__ = "_sgRNA_Library.py"
 __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
@@ -12,14 +12,7 @@ from ._supporting_functions._annotate_protospacer_position import _annotate_prot
 from ._supporting_functions._return_guides_in_regions import _return_guides_in_regions
 from ._supporting_functions._FetchGene import _FetchGene
 
-
-def _annotate_gene_body_start_stop(df):
-
-    """Get start/stop locations"""
-    gene_body = df.loc[df["feature"] == "gene"]
-    return gene_body.start.values[0], gene_body.end.values[0]
-
-class _GuideID:
+class _sgRNA_Library:
     
     def __init__(self, fetch_gene=False, gene_feature="exon", reference_directory=False, save_feature_bed=True, df=False):
         
@@ -36,7 +29,26 @@ class _GuideID:
             self.global_start = df.sort_values("gene_feature.start")["gene_feature.start"].min()
             
         
-    def scan(self,
+    def from_gene(self, gene):
+        
+        """Build a set of regions based on an input gene name"""
+        
+    def from_regions(self, df):
+        
+        """
+        Use a pre-built set of regions as input. 
+        
+        Parameters:
+        -----------
+        
+        Returns:
+        --------
+        
+        Notes:
+        ------
+        """
+    
+    def PAM_scan(self,
              sequence=False,
              region_column="gene_feature",
              region_specification="exon",
