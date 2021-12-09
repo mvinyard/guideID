@@ -37,6 +37,7 @@ def _return_guides_in_regions(
     region_column,
     region_specification,
     PAM="NGG",
+    global_start=0,
     region_extension=0,
 ):
 
@@ -48,9 +49,10 @@ def _return_guides_in_regions(
     region_df["range"] = ranges = _build_region_interval_idx(
         region_df, region_extension
     )
-
+    pam_df['pam.start'] += global_start
+    pam_df['pam.end'] += global_start
+        
     pam_df["range"] = pd.cut(x=pam_df["pam.start"].values, bins=ranges)
-
     guide_exon_df = pd.merge(region_df, pam_df, on="range").drop("range", axis=1)
 
-    return guide_exon_df
+    return pam_df, guide_exon_df, region_df

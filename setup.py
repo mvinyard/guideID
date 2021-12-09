@@ -15,7 +15,7 @@ setup(
     long_description_content_type="text/markdown",
     description="guideID. A vintools package.",
     packages=[
-        "guideID",
+        "guide_id",
     ],
     
     install_requires=[
