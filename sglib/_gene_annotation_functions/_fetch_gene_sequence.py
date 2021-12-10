@@ -39,8 +39,8 @@ def _fetch_gene_sequence(ref_genome_path, gene_df):
     ------
     """
 
-    gene_start, gene_end = _annotate_gene_body_start_stop(gene_df)
-    chromosome = _get_chromosome_name(gene_df)
+    gene_start, gene_end = _return_gene_body_bounds(gene_df)
+    chromosome = _fetch_chromosome_name(gene_df)
     chromosome_seq = seq_toolkit.fetch_chromosome(ref_genome_path, chromosome)
     gene_seq = chromosome_seq[gene_start:gene_end]
 

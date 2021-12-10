@@ -42,7 +42,7 @@ def _return_guides_in_regions(
 ):
 
     """"""
-
+    
     region_df = df.loc[df[region_column] == region_specification].reset_index(drop=True)
     pam_df = _id_PAMs_in_sequence(sequence, PAM, motif_key="pam", verbose=True)
 
@@ -53,6 +53,6 @@ def _return_guides_in_regions(
     pam_df['pam.end'] += global_start
         
     pam_df["range"] = pd.cut(x=pam_df["pam.start"].values, bins=ranges)
-    guide_exon_df = pd.merge(region_df, pam_df, on="range").drop("range", axis=1)
+    target_region_df = pd.merge(region_df, pam_df, on="range").drop("range", axis=1)
 
-    return pam_df, guide_exon_df, region_df
+    return target_region_df

@@ -1,6 +1,7 @@
+
 import seq_toolkit
 
-def _merge_reduce_gene_regions(gene_df, feature_df, out_path=False, return_df=False):
+def _merge_reduce_gene_regions(feature_df, gene, feature):
 
     """
     Often, when isolating a feature from a GTF for a given gene (ex: exons), there are many overlapping
@@ -36,19 +37,14 @@ def _merge_reduce_gene_regions(gene_df, feature_df, out_path=False, return_df=Fa
     
     Notes:
     ------
-    (1) It's necessary to pass both the gene_df and feature_df in order to get the chromosome name.
     """
-
-    chromosome = _get_chromosome_name(gene_df)
+    feature_bed_out_path = "{}.{}.bed".format(gene, feature)
+    
     df_ = feature_df.copy()    
-    df_.columns = ["Start", "End"]
-    df_["Chromosome"] = chromosome
-    df_ = df_[["Chromosome", "Start", "End"]]
+    df_.columns = ["Start", "End", "Chromosome"]
 
-    features = seq_toolkit.GenomicFeatures(df_)
+    features = seq_toolkit.GenomicFeatures(df_[["Chromosome", "Start", "End"]])
     features.merge()
-    if out_path:
-        features.write_bed(out_path)
-
-    if return_df:
-        return features.merged_df
+    features.write_bed(feature_bed_out_path)
+    
+    return features.merged_df
