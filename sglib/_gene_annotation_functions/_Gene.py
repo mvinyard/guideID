@@ -32,28 +32,12 @@ class _Gene:
 
     """"""
 
-    def __init__(self, reference_directory):
+    def __init__(self, reference_gtf, reference_genome_path):
 
         """Assumes a 10x reference directory."""
-
-        self.ref_genome_path = os.path.join(reference_directory, "fasta/genome.fa")
-        self.gtf_path = os.path.join(reference_directory, "genes/genes.gtf")
-        self.gtf_tsv = os.path.join(reference_directory, "genes/gtf.tsv")
-
-        if os.path.exists(self.gtf_tsv):
-            print("Loading GTF annotation file from {}...\n".format(self.gtf_tsv))
-            self.gtf = pd.read_csv(self.gtf_tsv, sep="\t")
-        else:
-            print("Loading GTF annotation file from {}...\n".format(self.gtf_path))
-            self.gtf = gtfparse.read_gtf(self.gtf_path)
-            self.gtf[["seqname",
-                     "feature",
-                     "gene_type",
-                     "gene_name",
-                     "start",
-                     "end",
-                     "strand",
-                     "exon_number",]].to_csv(self.gtf_tsv, sep="\t", index=False)
+        
+        self.gtf = reference_gtf
+        self.ref_genome_path = reference_genome_path
             
     def fetch(
         self,

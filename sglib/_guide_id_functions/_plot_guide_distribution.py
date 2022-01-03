@@ -2,19 +2,21 @@ import vinplots
 import matplotlib.pyplot as plt
 
 
-def _calculate_library_summary_metrics(guide_df):
+def _calculate_library_summary_metrics(guide_df, feature):
 
-    """"""
-    groupby_exon = guide_df.groupby("exon")
-    exon_lengths = groupby_exon.describe()["length"]["mean"]
-    guides_per_exon = groupby_exon.count()["protospacer.start"].values
+    """
+    For a CDS, this would be "exon". 
+    """
+    groupby_region = guide_df.groupby(feature)
+    region_lengths = groupby_region.describe()["length"]["mean"]
+    guides_per_region = groupby_region.count()["protospacer.start"].values
 
-    guide_per_bp = guides_per_exon / exon_lengths
+    guide_per_bp = guides_per_region / region_lengths
     bp_per_guide = 1 / guide_per_bp
 
-    exons = exon_lengths.index
+    regions = region_lengths.index
 
-    return exons, guides_per_exon, guide_per_bp, bp_per_guide
+    return regions, guides_per_region, guide_per_bp, bp_per_guide
 
 
 def _construct_plot():
@@ -34,22 +36,23 @@ def _construct_plot():
     return fig, axes
 
 
-def _plot_guide_distribution(guide_df):
+def _plot_guide_distribution(guide_df, feature):
 
     """"""
 
     fig, axes = _construct_plot()
-    titles = ["n_guides / exon", "n_guides / bp / exon", "n_bp / guide"]
+    titles = ["n_guides / {}".format(feature), "n_guides / bp / {}".format(feature), "n_bp / guide"]
 
     (
-        exons,
-        guides_per_exon,
+        regions,
+        guides_per_region,
         guide_per_bp,
         bp_per_guide,
-    ) = _calculate_library_summary_metrics(guide_df)
-    plot_guide_stats = [guides_per_exon, guide_per_bp, bp_per_guide]
+    ) = _calculate_library_summary_metrics(guide_df, feature)
+    
+    plot_guide_stats = [guides_per_region, guide_per_bp, bp_per_guide]
 
     for i, ax in enumerate(axes):
         ax.set_title(titles[i])
         ax.grid(True, zorder=0, alpha=0.2)
-        ax.bar(x=exons, height=plot_guide_stats[i], color="k", zorder=3)
+        ax.bar(x=regions, height=plot_guide_stats[i], color="k", zorder=3)

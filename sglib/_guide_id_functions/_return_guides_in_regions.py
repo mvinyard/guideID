@@ -24,8 +24,8 @@ def _build_region_interval_idx(df, region_extension):
     RegionIntervals = []
 
     for i in range(len(df)):
-        start = df.filter(regex="start").iloc[i].values[0] - region_extension
-        end = df.filter(regex="end").iloc[i].values[0] + region_extension
+        start = int(df.filter(regex="tart").iloc[i].values[0]) - region_extension
+        end = int(df.filter(regex="nd").iloc[i].values[0]) + region_extension
         RegionIntervals.append(pd.Interval(left=start, right=end, closed="right"))
 
     return pd.IntervalIndex(RegionIntervals)
@@ -34,8 +34,8 @@ def _build_region_interval_idx(df, region_extension):
 def _return_guides_in_regions(
     sequence,
     df,
-    region_column,
-    region_specification,
+    region_column=False,
+    region_specification=False,
     PAM="NGG",
     global_start=0,
     region_extension=0,
@@ -43,7 +43,11 @@ def _return_guides_in_regions(
 
     """"""
     
-    region_df = df.loc[df[region_column] == region_specification].reset_index(drop=True)
+    if region_column:
+        region_df = df.loc[df[region_column] == region_specification].reset_index(drop=True)
+    else:
+        region_df = df
+                
     pam_df = _id_PAMs_in_sequence(sequence, PAM, motif_key="pam", verbose=True)
 
     region_df["range"] = ranges = _build_region_interval_idx(
