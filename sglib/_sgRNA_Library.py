@@ -41,7 +41,7 @@ class _sgRNA_Library:
         
         return _print_exon_statistics(self.formatted_feature_df)
         
-    def from_regions(self, df):
+    def from_regions(self, df, coordinate_keys=["Chromosome", "Start", "End"]):
         
         """
         Use a pre-built set of regions as input. 
@@ -59,7 +59,7 @@ class _sgRNA_Library:
         """
         
         self.formatted_df = df
-        self.global_start = df.sort_values("gene_feature.start")["gene_feature.start"].min()
+        self.global_start = df.sort_values(coordinate_keys[1])[coordinate_keys[1]].min()
     
     def PAM_scan(self, PAM="NGG", extend_region=0, region_column="gene_feature", out_prefix="", return_guides=False,):
         
