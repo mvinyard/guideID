@@ -4,10 +4,12 @@ def _write_single_strand_sgRNA_bed_file(df, gene, feature, strand, out_prefix):
     
     if strand == "+":
         strand_label = "forward"
+        df_ = df_[["Chromosome", "protospacer.start", "protospacer.end"]]
     elif strand == "-":
         strand_label = "reverse"
+        df_ = df_[["Chromosome", "protospacer.end", "protospacer.start"]]
     
-    df_[["Chromosome", "protospacer.start", "protospacer.end"]].to_csv(
+    df_.to_csv(
         "{}{}.{}.{}.bed".format(out_prefix, gene, feature, strand_label), header=False, index=False, sep="\t"
     )
     
