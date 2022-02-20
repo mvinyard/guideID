@@ -2,11 +2,13 @@ import vinplots
 import matplotlib.pyplot as plt
 
 
-def _calculate_library_summary_metrics(guide_df, feature):
+def _calculate_library_summary_metrics(guide_df, feature="feature"):
 
     """
     For a CDS, this would be "exon". 
     """
+    
+    guide_df["length"] = abs(guide_df["Start"] - guide_df["End"])
     groupby_region = guide_df.groupby(feature)
     region_lengths = groupby_region.describe()["length"]["mean"]
     guides_per_region = groupby_region.count()["protospacer.start"].values

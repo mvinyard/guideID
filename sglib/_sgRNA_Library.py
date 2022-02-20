@@ -8,6 +8,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu",])
 
 # import packages #
 # --------------- #
+import pandas as pd
 import seq_toolkit
 
 
@@ -31,7 +32,7 @@ class _sgRNA_Library:
         """"""
         
         self.GTF, self.ref_genome_path = seq_toolkit.parse_reference(reference_directory)
-        
+        self._feature_key = "feature"
             
     def from_gene(self, gene, gene_feature="exon", reverse_strand=False):
         
@@ -47,15 +48,14 @@ class _sgRNA_Library:
         self.global_start = self.gene_start
         self.region_specification = gene_feature
         self.feature = gene_feature
+        self.df = self.Gene.merged_feature_df
+        self.chromosome = self.Gene.gene_df["seqname"].unique()[0]
+        self.region_sequences = {}
+        self.region_sequences["chr22"] = self.Gene.sequence
         
         return _print_exon_statistics(self.formatted_feature_df)
         
-<<<<<<< HEAD
-    def from_regions(self, df, coordinate_keys=["Chromosome", "Start", "End"]):
-=======
-    def from_regions(self, df, start_key="Start", end_key="End"):
->>>>>>> e54d87a6fade65d27d88f2d163d8744366c70277
-        
+    def from_regions(self, df, start_key="Start", end_key="End"):        
         """
         Use a pre-built set of regions as input. 
         
@@ -70,20 +70,15 @@ class _sgRNA_Library:
         Notes:
         ------
         """
-        
-<<<<<<< HEAD
-        self.formatted_df = df
-        self.global_start = df.sort_values(coordinate_keys[1])[coordinate_keys[1]].min()
-=======
         self.start_key = start_key
         self.end_key = end_key
         self.feature = "noncoding"
         
+        
         self.df = df
         self.region_sequences = _fetch_noncoding_region_sequence(self.df, self.ref_genome_path)
->>>>>>> e54d87a6fade65d27d88f2d163d8744366c70277
     
-    def PAM_scan(self, PAM="NGG", extend_region=0, out_prefix="", return_guides=False,):
+    def PAM_scan(self, PAM="NGG", extend_region=0, out_prefix="", return_guides=False, plot=False):
         
         """
         Parameters:
@@ -146,8 +141,8 @@ class _sgRNA_Library:
                                   "_insert_",
                                   self.feature,
                                   out_prefix)
-            
-        _plot_guide_distribution(sgRNA_df, feature=self.feature)
+        if plot:
+            _plot_guide_distribution(self.sgRNA_df, feature=self._feature_key)
             
         self.sgRNA_df.to_excel("./{}.{}.{}.sgRNAs.xlsx".format(region, self.feature, PAM), index=False)
         if return_guides:
