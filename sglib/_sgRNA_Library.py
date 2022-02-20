@@ -10,6 +10,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu",])
 # --------------- #
 import pandas as pd
 import seq_toolkit
+import pandas as pd
 
 
 # local imports #
@@ -55,7 +56,12 @@ class _sgRNA_Library:
         
         return _print_exon_statistics(self.formatted_feature_df)
         
+<<<<<<< HEAD
     def from_regions(self, df, start_key="Start", end_key="End"):        
+=======
+    def from_regions(self, df, start_key="Start", end_key="End", feature="peak", target_name="noncoding"):
+        
+>>>>>>> 1d6c9fe20ff9853b6074c4918221d24e1c90f274
         """
         Use a pre-built set of regions as input. 
         
@@ -70,15 +76,33 @@ class _sgRNA_Library:
         Notes:
         ------
         """
+<<<<<<< HEAD
         self.start_key = start_key
         self.end_key = end_key
         self.feature = "noncoding"
+=======
+        
+
+#         self.formatted_df = df
+#         self.global_start = df.sort_values(coordinate_keys[1])[coordinate_keys[1]].min()
+
+        self._start_key = start_key
+        self._end_key = end_key
+        self._feature = feature
+        self._target_name = target_name
+>>>>>>> 1d6c9fe20ff9853b6074c4918221d24e1c90f274
         
         
         self.df = df
         self.region_sequences = _fetch_noncoding_region_sequence(self.df, self.ref_genome_path)
+<<<<<<< HEAD
     
     def PAM_scan(self, PAM="NGG", extend_region=0, out_prefix="", return_guides=False, plot=False):
+=======
+
+        
+    def PAM_scan(self, PAM="NGG", extend_region=0, out_prefix="", return_guides=False,):
+>>>>>>> 1d6c9fe20ff9853b6074c4918221d24e1c90f274
         
         """
         Parameters:
@@ -118,32 +142,37 @@ class _sgRNA_Library:
         for chromosome, sequence in self.region_sequences.items():
             
             chrom_df = self.df.loc[self.df["Chromosome"] == chromosome]
-            start = chrom_df.Start.astype(int).max()
+            start = chrom_df.Start.astype(int).min()
             end = chrom_df.End.astype(int).max()
             
             region = "_".join([chromosome, str(start), str(end)])
             self.TargetDict[region] = {}
             
-            self.TargetDict[region]["target_df"] = _return_guides_in_regions(sequence,
+            self.TargetDict[region]["target_df"] = int_df =  _return_guides_in_regions(sequence,
                                                                  df=chrom_df,
                                                                  PAM=PAM,
                                                                  global_start=start,
                                                                  region_extension=extend_region,
                                                                 )         
-        
+
             self.TargetDict[region]["guide_df"] = _annotate_protospacer_position(self.TargetDict[region]["target_df"])
-            self.TargetDict[region]["guide_df"]["feature"] = self.feature
+            self.TargetDict[region]["guide_df"]["feature"] = self._feature
             list_of_guide_dfs.append(self.TargetDict[region]["guide_df"])
-            
             
         self.sgRNA_df = pd.concat(list_of_guide_dfs).reset_index(drop=True)
         _guide_df_to_stranded_bed(self.sgRNA_df, 
-                                  "_insert_",
-                                  self.feature,
+                                  self._target_name,
+                                  self._feature,
                                   out_prefix)
+<<<<<<< HEAD
         if plot:
             _plot_guide_distribution(self.sgRNA_df, feature=self._feature_key)
             
         self.sgRNA_df.to_excel("./{}.{}.{}.sgRNAs.xlsx".format(region, self.feature, PAM), index=False)
+=======
+#         _plot_guide_distribution(self.sgRNA_df, feature=self._feature)
+            
+        self.sgRNA_df.to_excel("./{}.{}.{}.sgRNAs.xlsx".format(region, self._feature, PAM), index=False)
+>>>>>>> 1d6c9fe20ff9853b6074c4918221d24e1c90f274
         if return_guides:
             return self.TargetDict

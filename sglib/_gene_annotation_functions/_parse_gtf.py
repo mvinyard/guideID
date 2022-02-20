@@ -1,5 +1,7 @@
 
 from gtfparse import read_gtf
+import os
+import pandas as pd
 
 def _parse_gtf(reference_directory):
     
@@ -33,7 +35,7 @@ def _parse_gtf(reference_directory):
         gtf = pd.read_csv(gtf_tsv, sep="\t")
     else:
         print("Loading GTF annotation file from {}...\n".format(gtf_path))
-        gtf = gtfparse.read_gtf(gtf_path)
+        gtf = read_gtf(gtf_path)
         gtf[["seqname",
                  "feature",
                  "gene_type",
